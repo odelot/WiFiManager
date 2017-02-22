@@ -126,6 +126,13 @@ void WiFiManager::setupConfigPortal() {
   //server->on("/generate_204", std::bind(&WiFiManager::handle204, this));  //Android/Chrome OS captive portal check.
   server->on("/fwlink", std::bind(&WiFiManager::handleRoot, this));  //Microsoft captive portal. Maybe not needed. Might be handled by notFound handler.
   server->onNotFound (std::bind(&WiFiManager::handleNotFound, this));
+  
+  //notify we entered AP mode
+  if ( _configWebServer != NULL) {
+    _configWebServer(server.get());
+  }
+  
+  
   server->begin(); // Web server start
   DEBUG_WM(F("HTTP server started"));
 
@@ -737,6 +744,9 @@ void WiFiManager::setRemoveDuplicateAPs(boolean removeDuplicates) {
   _removeDuplicateAPs = removeDuplicates;
 }
 
+void WiFiManager::setConfigWebServerCallback( void (*func)(ESP8266WebServer*) ){
+	_configWebServer = func;
+}
 
 
 template <typename Generic>

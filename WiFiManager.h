@@ -109,6 +109,9 @@ class WiFiManager
     void          setCustomHeadElement(const char* element);
     //if this is true, remove duplicated Access Points - defaut true
     void          setRemoveDuplicateAPs(boolean removeDuplicates);
+	
+	//called when configuring the webserver - useful to hook some route when configuring the device
+    void          setConfigWebServerCallback( void (*func)(ESP8266WebServer*) );
 
   private:
     std::unique_ptr<DNSServer>        dnsServer;
@@ -175,6 +178,9 @@ class WiFiManager
 
     void (*_apcallback)(WiFiManager*) = NULL;
     void (*_savecallback)(void) = NULL;
+	void (*_configWebServer)(ESP8266WebServer*) = NULL;
+	
+	
 
     WiFiManagerParameter* _params[WIFI_MANAGER_MAX_PARAMS];
 
