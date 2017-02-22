@@ -127,7 +127,7 @@ void WiFiManager::setupConfigPortal() {
   server->on("/fwlink", std::bind(&WiFiManager::handleRoot, this));  //Microsoft captive portal. Maybe not needed. Might be handled by notFound handler.
   server->onNotFound (std::bind(&WiFiManager::handleNotFound, this));
   
-  //notify we entered AP mode
+  //call callback to config webserver outside library
   if ( _configWebServer != NULL) {
     _configWebServer(server.get());
   }
